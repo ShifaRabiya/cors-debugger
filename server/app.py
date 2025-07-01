@@ -24,12 +24,13 @@ def run_code():
         return jsonify({"message": "CORS Error: No fetch request found in frontend!"})
     if has_fetch and has_cors_app and has_flask_cors:
         return jsonify({"message": "CORS configured correctly!"})
+    if has_fetch and not has_flask_cors and not has_cors-app:
+        return jsonify({"message": "CORS Error: Missing full CORS setup in backend!"}) 
     if has_fetch and not has_flask_cors:
         return jsonify({"message": "CORS Error: Missing CORS import in backend!"})
     if has_fetch and not has_cors_app:
         return jsonify({"message": "CORS Error: Missing CORS(app) in backend!"})
-        
-    return jsonify({"message": "CORS Error: Missing full CORS setup in backend!"})    
+           
 
 if __name__ == "__main__":
     app.run(debug=True)
