@@ -16,7 +16,7 @@ def run_code():
     print("Frontend Code:", frontend_code)
     print("Backend Code:", backend_code)
 
-    has_fetch = "fetch" in frontend_code
+    has_fetch = "fetch(" in frontend_code
     has_flask_cors = "from flask_cors import CORS" in backend_code
     has_cors_app = "CORS(app)" in backend_code
 
