@@ -4,10 +4,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/run", methods=["POST", "OPTIONS"])
+@app.route("/run", methods=["POST"])
 def run_code():
-    if request.method == "OPTIONS":
-        return jsonify({"message": "Preflight OK"}), 200
 
     data = request.get_json()
     print("Received from frontend:", data)
