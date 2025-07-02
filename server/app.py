@@ -11,6 +11,8 @@ def run_code():
     print("Received from frontend:", data)
 
     frontend_code = data.get("frontendCode", "")
+    
+    import re
 
     clean_frontend_code = re.sub(r"/\*.*?\*/", "", frontend_code, flags=re.DOTALL)
     clean_frontend_code = re.sub(r"//.*", "", clean_frontend_code)
@@ -25,7 +27,6 @@ def run_code():
     print("Frontend Code:", clean_frontend_code)
     print("Backend Code:", clean_backend_code)
 
-    import re
     fetch_pattern = r'fetch\s*\(\s*[\'"]https?://[^\'"]+[\'"]'
     has_fetch = re.search(fetch_pattern, clean_frontend_code) is not None
     has_flask_cors = "from flask_cors import CORS" in clean_backend_code
