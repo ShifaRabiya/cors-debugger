@@ -8,31 +8,21 @@ CORS(app)
 @app.route("/run", methods=["POST"])
 def run_code():
     data = request.get_json()
-    print("Received from frontend:", data)
-
     frontend_code = data.get("frontendCode", "")
     backend_code = data.get("backendCode", "")
-
-    frontend_cleaned = re.sub(r"/\*.*?\*/", "", frontend_code, flags=re.DOTALL)
-    frontend_cleaned = re.sub(r"//.*", "", frontend_cleaned)
 
     backend_cleaned = "\n".join(
         line for line in backend_code.splitlines()
         if not line.strip().startswith("#")
     )
 
-    print("Frontend Code:", frontend_cleaned)
-    print("Backend Code:", backend_cleaned)
-
     fetch_pattern = r'fetch\s*\(\s*[\'"]https?://[^\'"]+[\'"]\s*\)?'
-    has_fetch = re.search(fetch_pattern, frontend_cleaned) is not None
+    has_fetch = re.search(fetch_pattern, frontend_code) is not None
     has_flask_cors = "from flask_cors import CORS" in backend_cleaned
     has_cors_app = "CORS(app)" in backend_cleaned
 
     if not has_fetch:
-        return jsonify({
-            "message": "CORS Error: No valid fetch request found!"
-        }) 
+        return jsonify({"message": "CORS Error: No valid fetch request found!"})
     if has_fetch and has_cors_app and has_flask_cors:
         return jsonify({"message": "CORS configured correctly!"})
     if has_fetch and not has_flask_cors and not has_cors_app:
