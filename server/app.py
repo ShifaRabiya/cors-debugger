@@ -11,16 +11,25 @@ def run_code():
     print("Received from frontend:", data)
 
     frontend_code = data.get("frontendCode", "")
+
+    clean_frontend_code = re.sub(r"/\*.*?\*/", "", frontend_code, flags=re.DOTALL)
+    clean_frontend_code = re.sub(r"//.*", "", clean_frontend_code)
+
     backend_code = data.get("backendCode", "")
 
-    print("Frontend Code:", frontend_code)
-    print("Backend Code:", backend_code)
+    clean_backend_code = "\n".join(
+        line for line in backend_code.splitlines()
+        if not line.strip().startswith("#")
+    )
+
+    print("Frontend Code:", clean_frontend_code)
+    print("Backend Code:", clean_backend_code)
 
     import re
     fetch_pattern = r'fetch\s*\(\s*[\'"]https?://[^\'"]+[\'"]'
-    has_fetch = re.search(fetch_pattern, frontend_code) is not None
-    has_flask_cors = "from flask_cors import CORS" in backend_code
-    has_cors_app = "CORS(app)" in backend_code
+    has_fetch = re.search(fetch_pattern, clean_frontend_code) is not None
+    has_flask_cors = "from flask_cors import CORS" in clean_backend_code
+    has_cors_app = "CORS(app)" in clean_backend_code
 
     if not has_fetch:
         return jsonify({
