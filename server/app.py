@@ -24,7 +24,7 @@ def run_code():
 
     if not has_fetch:
         return jsonify({
-            "message": "CORS Error: No valid fetch request found! Please ensure you are calling fetch with a valid URL (e.g., fetch('https://example.com'))"
+            "message": "CORS Error: No valid fetch request found!"
         }) 
     if has_fetch and has_cors_app and has_flask_cors:
         return jsonify({"message": "CORS configured correctly!"})
