@@ -24,7 +24,7 @@ def run_code():
     print("Frontend Code:", frontend_cleaned)
     print("Backend Code:", backend_cleaned)
 
-    fetch_pattern = r'fetch\s*\(\s*[\'"]https?://[^\s\'"]+[\'"]'
+    fetch_pattern = r'fetch\s*\(\s*[\'"]https?://[^\'"]+[\'"]\s*\)?'
     has_fetch = re.search(fetch_pattern, frontend_cleaned) is not None
     has_flask_cors = "from flask_cors import CORS" in backend_cleaned
     has_cors_app = "CORS(app)" in backend_cleaned
